@@ -50,6 +50,7 @@ class HomeAssistant(object):
                                 'content-type': 'application/json',
                                 'User-Agent': agent_fmt}
         self.session.verify = config.ssl_verify
+        self.session.cert = config.ssl_client
 
     def build_url(self, relurl):
         return '%s/%s' % (self.config.url, relurl)
@@ -627,6 +628,7 @@ class Configuration(object):
         opts['exposed_domains'] = \
             sorted(self.get(['exposed_domains', 'ha_allowed_entities'],
                             default=DOMAINS.keys()))
+        opts['ssl_client'] = self.get(['ssl_client'],default='')
 
         default_entity_suffixes = {'group': 'Group', 'scene': 'Scene'}
         opts['entity_suffixes'] = {domain: '' for domain in DOMAINS.keys()}
